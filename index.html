@@ -42,7 +42,7 @@
         // Fetch data from Google Sheets using Google Sheets API
         async function fetchData() {
             const spreadsheetId = '1byxnq_roUKsl1yJqcxKhxMkL4ZHYtpY49zqOl8clOOI';
-            const sheetName = 'Sheet1';
+            const sheetName = 'Sheet';
             const apiKey = 'AIzaSyD4BnScYvE0_GzklwLBxR2VZ8YMZK2NCZ8';
 
             const response = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${sheetName}?key=${apiKey}`);
