@@ -42,10 +42,18 @@
         // Fetch data from Google Sheets using Google Sheets API
         async function fetchData() {
             const spreadsheetId = '1byxnq_roUKsl1yJqcxKhxMkL4ZHYtpY49zqOl8clOOI';
-            const sheetName = 'Sheet';
-            const apiKey = 'AIzaSyD4BnScYvE0_GzklwLBxR2VZ8YMZK2NCZ8';
+            const sheetsAPIKey = 'AIzaSyD4BnScYvE0_GzklwLBxR2VZ8YMZK2NCZ8';
 
-            const response = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${sheetName}?key=${apiKey}`);
+            // Get the list of sheets
+            const sheetsResponse = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}?key=${sheetsAPIKey}`);
+            const sheetsData = await sheetsResponse.json();
+            const sheets = sheetsData.sheets.map(sheet => sheet.properties.title);
+
+            // Get the last sheet
+            const lastSheet = sheets[sheets.length - 1];
+
+            // Fetch data from the last sheet
+            const response = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${lastSheet}?key=${sheetsAPIKey}`);
             const data = await response.json();
             return data.values;
         }
