@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Google Sheet Page</title>
+
+    <!-- Add Chart.js from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: url('background.jpg') center/cover fixed;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        iframe {
+            width: 100%;
+            height: 80vh; /* Adjust the height as needed */
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        canvas {
+            max-width: 100%; /* Ensure the chart is responsive */
+        }
+    </style>
+</head>
+<body>
+    <!-- Add a canvas element for the pie chart -->
+    <canvas id="myPieChart"></canvas>
+
+    <!-- Add a script to create and update the pie chart -->
+    <script>
+        // Fetch data from Google Sheets using Google Sheets API
+        async function fetchData() {
+            const spreadsheetId = '1byxnq_roUKsl1yJqcxKhxMkL4ZHYtpY49zqOl8clOOI';
+            const sheetName = 'Sheet1';
+            const apiKey = 'AIzaSyD4BnScYvE0_GzklwLBxR2VZ8YMZK2NCZ8';
+
+            const response = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${sheetName}?key=${apiKey}`);
+            const data = await response.json();
+            return data.values;
+        }
+
+        // Update the pie chart with the fetched data
+        async function updateChart() {
+            const values = await fetchData();
+
+            // Extract labels and data from the fetched values
+            const labels = values[0].slice(1); // Assuming the first row contains labels
+            const data = values[1].slice(1).map(Number); // Assuming the second row contains numeric data
+
+            // Create the pie chart
+            var ctx = document.getElementById('myPieChart').getContext('2d');
+            var myPieChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"]
+                    }]
+                }
+            });
+        }
+
+        // Call the updateChart function
+        updateChart();
+    </script>
+</body>
+</html>
