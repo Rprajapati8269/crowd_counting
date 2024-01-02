@@ -60,24 +60,28 @@
 
         // Update the pie chart with the fetched data
         async function updateChart() {
-            const values = await fetchData();
+            try {
+                const values = await fetchData();
 
-            // Extract labels and data from the fetched values
-            const labels = values[0].slice(1); // Assuming the first row contains labels
-            const data = values[1].slice(1).map(Number); // Assuming the second row contains numeric data
+                // Extract labels and data from the fetched values
+                const labels = values[0].slice(1); // Assuming the first row contains labels
+                const data = values[1].slice(1).map(Number); // Assuming the second row contains numeric data
 
-            // Create the pie chart
-            var ctx = document.getElementById('myPieChart').getContext('2d');
-            var myPieChart = new Chart(ctx, {
-                type: 'pie',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        data: data,
-                        backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"]
-                    }]
-                }
-            });
+                // Create the pie chart
+                var ctx = document.getElementById('myPieChart').getContext('2d');
+                var myPieChart = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            data: data,
+                            backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"]
+                        }]
+                    }
+                });
+            } catch (error) {
+                console.error(error);
+            }
         }
 
         // Call the updateChart function
